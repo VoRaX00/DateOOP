@@ -22,6 +22,8 @@ Date::Date(unsigned _year, unsigned short _month, unsigned short _day, unsigned 
     min = _min;
     sec = _sec;
     isOurEra = era;
+    adjustOverflow();
+    adjustUnderflow();
 }
 
 Date Date::add(unsigned year, unsigned short month, unsigned short day,
@@ -57,17 +59,17 @@ unsigned short Date::daysInMonth()
 
 void Date::adjustOverflow()
 {
-    if (sec >= 60)
+    while (sec >= 60)
     {
         sec -= 60;
         min++;
     }
-    if (min >= 60)
+    while (min >= 60)
     {
         min -= 60;
         hour++;
     }
-    if (hour >= 24)
+    while (hour >= 24)
     {
         hour -= 24;
         day++;
@@ -94,17 +96,17 @@ void Date::adjustOverflow()
 
 void Date::adjustUnderflow()
 {
-    if (sec < 0)
+    while (sec < 0)
     {
         sec += 60;
         min--;
     }
-    if (min < 0)
+    while (min < 0)
     {
         min += 60;
         hour--;
     }
-    if (hour < 0)
+    while (hour < 0)
     {
         hour += 24;
         day--;
