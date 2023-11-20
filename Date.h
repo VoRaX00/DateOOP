@@ -40,7 +40,8 @@ public:
 private:
     unsigned short daysInMonth();
     void adjustOverflow();
-    void adjustUnderflow();
+    void adjustUnderflow(int &year, int &month, int &day,
+                         int &hour, int &min, int &sec, bool &era);
 };
 
 // ostream &operator<<(ostream &out, const Date &date)

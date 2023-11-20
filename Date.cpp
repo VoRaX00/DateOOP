@@ -23,7 +23,6 @@ Date::Date(unsigned _year, unsigned short _month, unsigned short _day, unsigned 
     sec = _sec;
     isOurEra = era;
     adjustOverflow();
-    adjustUnderflow();
 }
 
 Date Date::add(unsigned year, unsigned short month, unsigned short day,
@@ -94,7 +93,8 @@ void Date::adjustOverflow()
     }
 }
 
-void Date::adjustUnderflow()
+void Date::adjustUnderflow(int &year, int &month, int &day,
+                           int &hour, int &min, int &sec, bool &era)
 {
     while (sec < 0)
     {
@@ -155,14 +155,15 @@ void Date::operator+=(const Date &date)
 
 Date Date::operator-(const Date &date)
 {
-    Date diff;
-    diff.sec = sec - date.sec;
-    diff.min = min - date.min;
-    diff.hour = hour - date.hour;
-    diff.day = day - date.day;
-    diff.month = month - date.month;
-    diff.year = year - date.year;
-    diff.adjustUnderflow();
+    int sec = sec - date.sec;
+    int min = min - date.min;
+    int hour = hour - date.hour;
+    int day = day - date.day;
+    int month = month - date.month;
+    int year = year - date.year;
+    bool era = ((year > 0) ? true : false);
+    adjustUnderflow(year, month, hour, day, hour, sec, era);
+    Date diff(year, month, hour, day, hour, sec, era);
     return diff;
 }
 
